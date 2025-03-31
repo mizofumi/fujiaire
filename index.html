@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fujiaire 文字変換</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        textarea { width: 80%; height: 100px; margin: 10px 0; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Fujiaire 文字変換</h2>
+    <textarea id="inputText" placeholder="ここに文字を入力"></textarea><br>
+    <button onclick="convertText()">変換</button><br>
+    <textarea id="outputText" readonly placeholder="変換後の文字列"></textarea>
+
+    <script>
+        function convertText() {
+            let before = "きにてりをグジズゼダッデネバパビピブプベペボポ";
+            let after  = "りかくとゼパピにしビツダブガはプポデボバグジズ";
+            let before_pl = /(くだ|下)さい/g;
+            let after_pl = "ンス";
+            let before_loading = /読み*込み*中*/g;
+            let after_loading = "藏年";
+
+            let input = document.getElementById("inputText").value;
+
+            let output = input
+                .replace(before_pl, after_pl)
+                .replace(before_loading, after_loading)
+                .split('').map(char => {
+                    let index = before.indexOf(char);
+                    return index !== -1 ? after[index] : char;
+                }).join('');
+            
+            document.getElementById("outputText").value = output;
+        }
+    </script>
+</body>
+</html>
