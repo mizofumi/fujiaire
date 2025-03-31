@@ -14,7 +14,24 @@
     <h2>Fujiaire 文字変換</h2>
     <textarea id="inputText" placeholder="ここに文字を入力"></textarea><br>
     <button onclick="convertText()">変換</button><br>
-    <textarea id="outputText" readonly placeholder="変換後の文字列"></textarea>
+    <textarea id="outputText" readonly placeholder="変換後の文字列"></textarea><br>
+    <button onclick="convertFakeJapaneseText()">君日本语本当上手↓</button><br>
+    <label>
+        <input type="checkbox" id="enableFakeMapping" checked> フェイク漢字を有効にする
+    </label><br>
+    <label>
+        フォント選択:
+        <select id="fontSelector">
+            <option value="'SimSun', 'NSimSun', 'KaiTi'">SimSun</option>
+            <option value="'Microsoft YaHei', 'PingFang SC'">Microsoft YaHei</option>
+            <option value="'FangSong', 'KaiTi'">FangSong</option>
+            <option value="'STHeiti', 'Heiti SC'">STHeiti</option>
+            <option value="'LiSong Pro', 'Songti SC'">LiSong Pro</option>
+            <option value="'Hiragino Sans GB', 'PingFang SC'">Hiragino Sans GB</option>
+            <option value="'WenQuanYi Micro Hei', 'Source Han Sans SC'">WenQuanYi Micro Hei</option>
+        </select>
+    </label><br>
+    <textarea id="fakeJapaneseStyleText" readonly placeholder=""></textarea>
 
     <script>
         function convertText() {
@@ -36,6 +53,47 @@
                 }).join('');
             
             document.getElementById("outputText").value = output;
+        }
+
+        function convertFakeJapaneseText() {
+            let input = document.getElementById("outputText").value;
+            let enableFakeMapping = document.getElementById("enableFakeMapping").checked;
+            let selectedFont = document.getElementById("fontSelector").value;
+
+            // フェイク漢字マッピング
+            let fakeMapping = {
+                "会": "会", "見": "见", "国": "国", "学": "学", "気": "气",
+                "車": "车", "電": "电", "時": "时", "間": "间", "体": "体",
+                "発": "发", "動": "动", "変": "变", "進": "进", "選": "选",
+                "開": "开", "閉": "闭", "問": "问", "答": "答", "読": "读",
+                "書": "书", "聞": "闻", "話": "话", "買": "买", "売": "卖",
+                "働": "动", "使": "使", "作": "作", "住": "住", "信": "信",
+                "食": "食", "飲": "饮", "帰": "归", "歩": "步", "走": "走",
+                "飛": "飞", "楽": "乐", "園": "园", "場": "场", "線": "线",
+                "駅": "站", "図": "图", "館": "馆", "医": "医", "者": "者",
+                "愛": "爱", "優": "优", "務": "务", "働": "动", "続": "续",
+                "経": "经", "総": "总", "戦": "战", "対": "对", "観": "观",
+                "議": "议", "関": "关", "産": "产", "検": "检", "価": "价",
+                "効": "效", "機": "机", "構": "构", "設": "设", "製": "制",
+                "表": "表", "計": "计", "数": "数", "制": "制", "動": "动",
+                "変": "变", "電": "电", "圧": "压", "温": "温", "測": "测",
+                "試": "试", "験": "验", "質": "质", "量": "量", "記": "记",
+                "録": "录", "伝": "传", "統": "统", "解": "解", "析": "析",
+                "構": "构", "造": "造", "設": "设", "環": "环", "境": "境",
+                "保": "保", "護": "护", "修": "修", "復": "复", "断": "断",
+                "続": "续", "終": "终", "始": "始", "動": "动", "静": "静",
+                "速": "速", "遅": "迟", "高": "高", "低": "低", "強": "强",
+                "弱": "弱", "新": "新", "旧": "旧", "開": "开", "閉": "闭"
+            };
+
+            // フェイク漢字を適用
+            let replacedText = enableFakeMapping
+                ? input.split('').map(char => fakeMapping[char] || char).join('')
+                : input;
+
+            // 結果を表示
+            document.getElementById("fakeJapaneseStyleText").value = replacedText;
+            document.getElementById("fakeJapaneseStyleText").style.fontFamily = selectedFont;
         }
     </script>
 </body>
